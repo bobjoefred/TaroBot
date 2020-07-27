@@ -20,10 +20,31 @@ client.on('message', message => {
 	//if(!message.content.includes(prefix)){
 		//console.log("NOOOOO")
 	//}
-	fs.writeFile('previousMessage.txt', message.content.toString(), function (err) {
-	  if (err) throw err;
-	  console.log('Saved!');
-	});
+
+	if (message.author.bot) return;
+
+	fs.readFile('previousMessage.txt','utf8', function (err,data) {
+  if (err) {
+    return console.log(err);
+  }
+
+	if (message.content.toString().toLowerCase() === data.toString().toLowerCase()){
+		message.channel.send(message.content.toString());
+		fs.writeFile('previousMessage.txt', '123456489798456123186189135198416513987798231', function (err) {
+		  if (err) throw err;
+		  console.log('Wiped');
+		});
+
+	} else {
+		fs.writeFile('previousMessage.txt', message.content.toString(), function (err) {
+		  if (err) throw err;
+		  console.log('Saved!');
+		});
+	}
+  console.log(data);
+});
+
+
 
 	var fleetSpeedPrefix = "fleet speed = ";
 	if (message.content.startsWith(fleetSpeedPrefix)){
@@ -37,7 +58,7 @@ client.on('message', message => {
 		return;
 	}
 
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
+  if (!message.content.startsWith(prefix)) return;
 
 	//message.content = message.content.split(prefix)[];
 	//console.log(message.content)
